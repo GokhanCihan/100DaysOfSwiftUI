@@ -41,6 +41,15 @@ struct ContentView: View {
                             Text("\($0) people")
                         }
                     }
+                    .toolbar {
+                        ToolbarItemGroup(placement: .keyboard) {
+                            Spacer()
+                            
+                            Button("Done") {
+                                amountIsFocused = false
+                            }
+                        }
+                    }
                 }
                 
                 Section {
