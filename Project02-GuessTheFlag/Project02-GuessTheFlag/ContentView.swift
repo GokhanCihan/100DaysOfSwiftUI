@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var showingAlert = false
+    
     var body: some View {
         // Buttons
         VStack {
@@ -47,6 +50,16 @@ struct ContentView: View {
             }
             .padding(20)
             .buttonStyle(.bordered)
+            
+            Button("Show Alert") {
+                showingAlert = true
+            }
+            .alert("Important message", isPresented: $showingAlert) {
+                Button("Delete", role: .destructive) { }
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text("Long information text etc.")
+            }
         }
         
         // View with colored background
