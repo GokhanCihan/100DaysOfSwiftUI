@@ -8,7 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+    var body: some View {
+        VStack {
+            Image(systemName: "globe")
+            Text("Hello World!")
+        }
+    }
+}
+
+struct ExamplesView: View {
     @State private var showingAlert = false
     
     var body: some View {
