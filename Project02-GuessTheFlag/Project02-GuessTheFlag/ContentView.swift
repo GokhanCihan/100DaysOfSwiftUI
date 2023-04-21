@@ -14,27 +14,63 @@ struct ContentView: View {
     
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"]
     @State private var correctAnswer = Int.random(in: 0...2)
-    
+
+    let myBluishColor = Color(.init(red: 0.3, green: 0.4, blue: 1, alpha: 0.9))
+
     var body: some View {
         ZStack {
-            Color(.init(red: 0.3, green: 0.4, blue: 1, alpha: 0.9))
-                .ignoresSafeArea()
-            
+            LinearGradient(
+                gradient: Gradient(stops: [
+                    Gradient.Stop(color: .black, location: 0),
+                    Gradient.Stop(color: .blue, location: 0.2),
+                    Gradient.Stop(color: myBluishColor, location: 0.6),
+                    Gradient.Stop(color: .blue, location: 0.8),
+                    Gradient.Stop(color: .black, location: 1)
+                ]),
+                startPoint: .top,
+                endPoint: .bottom
+            ).ignoresSafeArea()
+
             VStack {
-                VStack {
-                    Text("Tap the flag of")
+                VStack(spacing: 10) {
+                    Text("Guess the Flag")
+                            .font(.largeTitle.weight(.bold))
+                            .foregroundColor(.white)
+                    
+                    Text("Score: ???")
                         .foregroundColor(.white)
-                    Text(countries[correctAnswer])
-                        .foregroundColor(.white)
-                }
-                
-                ForEach(0..<3) { number in
-                    Button {
-                    flagTapped(number)
-                    } label: {
-                        Image(countries[number])
-                            .renderingMode(.original)
+                        .font(.title.bold())
+                    
+                    Spacer()
+                    
+                    VStack() {
+                        Text("Tap the flag of")
+                            .font(.subheadline.weight(.heavy))
+                            .foregroundColor(.white)
+                        Text(countries[correctAnswer])
+                            .foregroundColor(.white)
+                            .fontWeight(.heavy)
+                            .fontWidth(.expanded)
                     }
+                    
+                    VStack(spacing: 25) {
+                        ForEach(0..<3) { number in
+                            Button {
+                                flagTapped(number)
+                            } label: {
+                                Image(countries[number])
+                                    .renderingMode(.original)
+                                    .clipShape(Capsule())
+                                    .shadow(radius: 10)
+                            }
+                        }
+                    }
+                    .frame(maxWidth: 300)
+                    .padding(.vertical, 20)
+                    .background(.ultraThinMaterial.opacity(0.9))
+                    .clipShape(RoundedRectangle(cornerRadius: 50))
+                    
+                    Spacer()
                 }
             }
         }
