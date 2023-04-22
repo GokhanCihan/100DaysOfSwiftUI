@@ -9,10 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @State private var showingEndGame = false
+    @State private var endGameTitle = "Game Over"
+    @State private var questionCount = 1
+    @State private var endGameAlertMessage = ""
+    
     @State private var showingScore = false
     @State private var scoreTitle = "score"
     @State private var score = 0
-    @State private var alertMessage = ""
+    @State private var scoreAlertMessage = ""
     
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"]
     @State private var correctAnswer = Int.random(in: 0...2)
@@ -77,29 +82,50 @@ struct ContentView: View {
             }
         }
         .alert(scoreTitle, isPresented: $showingScore) {
-            Button("Continue", action: newQuestion)
+            Button("Continue", action: proceed)
         } message: {
-            Text(alertMessage)
+            Text(scoreAlertMessage)
+        }
+        .alert(endGameTitle, isPresented: $showingEndGame) {
+            Button("Restart", action: restartGame)
+        } message: {
+            Text(endGameAlertMessage)
         }
     }
     
     func flagTapped(_ number: Int) {
         if number == correctAnswer {
             scoreTitle = "Correct"
-            alertMessage = "You choose the correct one. Congratulations!"
+            scoreAlertMessage = "You choose the correct one. Congratulations!"
             score += 1
         } else {
             scoreTitle = "Wrong"
-            alertMessage = "This flag belongs to \(countries[number])!"
+            scoreAlertMessage = "This flag belongs to \(countries[number])!"
             score -= 1
         }
-
+        
         showingScore = true
     }
     
+    func proceed() {
+        if questionCount != 8 {
+            newQuestion()
+        } else {
+            endGameAlertMessage = "Your final score is \(score)"
+            showingEndGame = true
+        }
+    }
+    
     func newQuestion() {
+        questionCount += 1
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+    }
+    
+    func restartGame() {
+        questionCount = 0
+        score = 0
+        newQuestion()
     }
 }
 
