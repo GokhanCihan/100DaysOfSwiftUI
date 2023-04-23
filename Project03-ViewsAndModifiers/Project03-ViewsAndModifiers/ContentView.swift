@@ -27,11 +27,35 @@ struct ExampleView: View {
             .background(.green)
             .padding()
             .background(.yellow)
+        //Environment modifier {.font()}: child view modifier takes priority
+        VStack {
+            Text("Gryffindor")
+                .font(.title)
+                .blur(radius: 0)
+            Text("Hufflepuff")
+            Text("Ravenclaw")
+            Text("Slytherin")
+        }
+        .font(.largeTitle)
+        .blur(radius: 5)
+    }
+}
+
+struct PropertiesView: View {
+    let textView = Text("Text View as a property")
+    let buttonView = Button("property button") {}
+    var body: some View {
+        VStack {
+            textView
+                .background(.green)
+            buttonView
+                .buttonStyle(.borderedProminent)
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ExampleView()
+        PropertiesView()
     }
 }
