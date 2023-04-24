@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         Text("Hello World!")
+            .putProminentTitleAbove(text: "This is a \"prominent Title\"")
     }
 }
 
@@ -114,6 +115,28 @@ extension View {
     }
 }
 
+struct ProminentTitle: ViewModifier {
+    var text: String
+    
+    func body(content: Content) -> some View {
+        VStack{
+            Text(text.capitalized)
+                .multilineTextAlignment(.center)
+                .font(.largeTitle)
+                .fontWeight(.heavy)
+                .foregroundColor(.blue)
+                .padding(30)
+            content
+        }
+    }
+}
+
+extension View {
+    func putProminentTitleAbove(text: String) -> some View {
+        modifier(ProminentTitle(text: text))
+    }
+}
+
 struct CustomModifierView: View {
     var body: some View {
         VStack(spacing: 100) {
@@ -128,6 +151,6 @@ struct CustomModifierView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        CustomModifierView()
+        ContentView()
     }
 }
