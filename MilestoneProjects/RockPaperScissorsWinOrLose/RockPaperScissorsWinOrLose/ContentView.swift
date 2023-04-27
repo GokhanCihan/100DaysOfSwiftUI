@@ -9,35 +9,59 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @State private var AIweapon: Weapon = Weapon.allCases.randomElement()!
-
-    @State private var humanWeapon: Weapon = Weapon.allCases.randomElement()!
+    @State private var weapons = ["rock", "paper", "scissors"]
+    
+    @State private var AIWeapon: String = "paper"
+    @State var humanWeapon: String = "Thinking"
+    
+    @State private var AIWeaponSelected = true
+    @State private var humanWeaponSelected = false
+    
+    var matchResult: String {
+        if humanWeapon == "rock" && AIWeapon == "scissors" {
+            return "win"
+        }else if humanWeapon == "paper" && AIWeapon == "rock" {
+            return "win"
+        }else if humanWeapon == "scissors" && AIWeapon == "paper" {
+            return "win"
+        }else if humanWeapon == AIWeapon {
+            return "nothing happens"
+        }else {
+            return "lost"
+        }
+    }
 
     var body: some View {
-        VStack {
-            Text("AI: \(AIweapon.rawValue)")
-            Text("Human: \(humanWeapon.rawValue)")
-            Text("Human Wins: \(match(humanWeapon, with: AIweapon).description)")
+        VStack(alignment: .center, spacing: 0) {
+            VStack() {
+                Text("AI: \(AIWeapon)")
+            }
+            .frame(minWidth: 800, minHeight: 500)
+            .border(.black)
+            
+            VStack(alignment: .center, spacing: 50){
+                Text("\(matchResult)")
+                
+                VStack(){
+                    Text("Choose your weapon")
+                    HStack(spacing: 50) {
+                        ForEach(weapons, id: \.self) { weapon in
+                            Button {
+                                selectHumanWeapon(weapon)
+                            } label: {
+                                Text(weapon)
+                            }
+                        }
+                    }
+                }
+            }
+            .frame(minWidth: 800, minHeight: 500)
+            .border(.black)
         }
-        .padding()
     }
-
-    enum Weapon: String, CaseIterable {
-        case rock
-        case paper
-        case scissor
-    }
-
-    func match(_ humanWeapon: Weapon, with AIWeapon: Weapon) -> Bool {
-        if humanWeapon == .rock && AIWeapon == .scissor {
-            return true
-        }else if humanWeapon == .paper && AIWeapon == .rock {
-            return true
-        }else if humanWeapon == .scissor && AIWeapon == .paper {
-            return true
-        }else {
-            return false
-        }
+    func selectHumanWeapon(_ weapon: String) {
+        humanWeaponSelected = true
+        humanWeapon = weapon
     }
 }
 
